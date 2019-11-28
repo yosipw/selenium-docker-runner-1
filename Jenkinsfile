@@ -3,30 +3,30 @@ pipeline{
 	stages{ 
 		stage('delete files from workspace') {
 		  steps {
-		    sh 'sudo whoami'
+		    sh 'whoami'
 		  }
 		}
 		stage("Pull Latest Image"){
 			steps{
-				sh "sudo docker pull yosua161/selenium-docker"
+				sh "docker pull yosua161/selenium-docker"
 			}
 		}
 		stage("Start Grid"){
 			steps{
-				sh "sudo docker-compose up -d hub chrome firefox"
+				sh "docker-compose up -d hub chrome firefox"
 			}
 		}
 		stage("Run Test"){
 			steps{
-				sh "sudo docker-compose up book-flight-module"
+				sh "docker-compose up book-flight-module"
 			}
 		}
 	}
 	post{
 		always{
 			archiveArtifacts artifacts: 'output/**'
-			sh "sudo docker-compose down"
-			sh "sudo rm -rf output/"
+			sh "docker-compose down"
+			sh "rm -rf output/"
 		}
 	}
 }
