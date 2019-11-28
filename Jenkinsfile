@@ -1,6 +1,11 @@
 pipeline{
 	agent any
-	stages{
+	stages{ 
+		stage('delete files from workspace') {
+		  steps {
+		    sh 'sudo whoami'
+		  }
+		}
 		stage("Pull Latest Image"){
 			steps{
 				sh "sudo docker pull yosua161/selenium-docker"
