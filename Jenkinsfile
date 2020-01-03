@@ -21,22 +21,19 @@ pipeline{
 				sh "docker-compose up book-flight-module"
 			}
 		}
-	    stage('Generate HTML report') {
-	        cucumber buildStatus: 'UNSTABLE',
-	                fileIncludePattern: '**/*.json',
-	                trendsLimit: 10,
-	                classifications: [
-	                    [
-	                        'key': 'Browser',
-	                        'value': 'Firefox'
-	                    ]
-	                ]
-	    }
 	}
 	post{
 		always{
 			archiveArtifacts artifacts: 'output/**'
 			sh "docker-compose down"
+	        cucumber buildStatus: 'UNSTABLE',
+	                failedFeaturesNumber: 1,
+	                failedScenariosNumber: 1,
+	                skippedStepsNumber: 1,
+	                failedStepsNumber: 1,
+	                fileIncludePattern: '**/*cucumber-report.json',
+	                sortingMethod: 'ALPHABETICAL',
+	                trendsLimit: 100
 		}
 	}
 }
